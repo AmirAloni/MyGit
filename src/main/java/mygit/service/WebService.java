@@ -40,7 +40,7 @@ public class WebService {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             else
-                return new ResponseEntity<>("User is already exists", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
