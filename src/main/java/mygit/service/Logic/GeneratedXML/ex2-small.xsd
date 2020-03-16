@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="MagitRepository" type="MagitRepositoryType">
+    <xs:annotation>
+      <xs:documentation>edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg)</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="MagitBlobType">
+    <xs:sequence>
+      <xs:element name="name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="a.txt"/>
+            <xs:enumeration value="Foo.java"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="last-updater">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Moyshe Ufnik"/>
+            <xs:enumeration value="Arik and Bentz"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="last-update-date">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="09.06.2019-20:15:11:232"/>
+            <xs:enumeration value="09.06.2019-20:25:10:111"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="content">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="a.txt content"/>
+            <xs:enumeration value="
+			public class Foo {
+				public static void main(String[] args) {
+					System.out.println(&quot;hello world&quot;);
+				}
+			}
+			"/>
+            <xs:enumeration value="
+			public class Foo {
+				public static void main(String[] args) {
+					System.out.println(&quot;hello world tao tao&quot;);
+				}
+			}
+			"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="MagitBlobsType">
+    <xs:sequence>
+      <xs:element type="MagitBlobType" name="MagitBlob" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="itemType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="itemsType">
+    <xs:sequence>
+      <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MagitSingleFolderType">
+    <xs:sequence>
+      <xs:element name="last-updater">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Moyshe Ufnik"/>
+            <xs:enumeration value="Arik and Bentz"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="last-update-date">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="09.06.2019-20:15:11:232"/>
+            <xs:enumeration value="09.06.2019-20:25:10:111"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="name" minOccurs="0"/>
+      <xs:element type="itemsType" name="items"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+    <xs:attribute type="xs:string" name="is-root" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="MagitFoldersType">
+    <xs:sequence>
+      <xs:element type="MagitSingleFolderType" name="MagitSingleFolder" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="root-folderType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MagitSingleCommitType">
+    <xs:sequence>
+      <xs:element type="root-folderType" name="root-folder"/>
+      <xs:element name="message">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Initial commit performed on this repository"/>
+            <xs:enumeration value="changed Foo PSVM to say hello to tao tao"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="author">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Moyshe Ufnik"/>
+            <xs:enumeration value="Arik and Bentz"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="date-of-creation">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="09.06.2019-20:15:11:232"/>
+            <xs:enumeration value="09.06.2019-20:25:10:111"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="preceding-commitsType" name="preceding-commits" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="preceding-commitType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="id"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="preceding-commitsType">
+    <xs:sequence>
+      <xs:element type="preceding-commitType" name="preceding-commit"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MagitCommitsType">
+    <xs:sequence>
+      <xs:element type="MagitSingleCommitType" name="MagitSingleCommit" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="pointed-commitType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MagitSingleBranchType">
+    <xs:sequence>
+      <xs:element name="name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="master"/>
+            <xs:enumeration value="repo1\master"/>
+            <xs:enumeration value="test"/>
+            <xs:enumeration value="repo1\test"/>
+            <xs:enumeration value="feature1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="pointed-commitType" name="pointed-commit"/>
+      <xs:element name="tracking-after" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="repo1\master"/>
+            <xs:enumeration value="repo1\test"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="tracking" use="optional"/>
+    <xs:attribute type="xs:string" name="is-remote" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="MagitBranchesType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="head"/>
+      <xs:element type="MagitSingleBranchType" name="MagitSingleBranch" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MagitRemoteReferenceType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="name"/>
+      <xs:element type="xs:string" name="location"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MagitRepositoryType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="location"/>
+      <xs:element type="MagitBlobsType" name="MagitBlobs"/>
+      <xs:element type="MagitFoldersType" name="MagitFolders"/>
+      <xs:element type="MagitCommitsType" name="MagitCommits"/>
+      <xs:element type="MagitBranchesType" name="MagitBranches"/>
+      <xs:element type="MagitRemoteReferenceType" name="MagitRemoteReference"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+  </xs:complexType>
+</xs:schema>
