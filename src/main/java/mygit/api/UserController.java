@@ -1,41 +1,35 @@
 package mygit.api;
 
-import mygit.service.WebLogic.WebLogic;
-import mygit.service.WebLogic.WebObjects.Repository;
+import mygit.service.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RequestMapping("mygit/api/user")
 @RestController
 public class UserController {
 
-    private final WebLogic webLogicService;
+    private final WebService service;
 
     @Autowired
-    public UserController(WebLogic webLogicService) {
-        this.webLogicService = webLogicService;
+    public UserController(WebService webService) {
+        this.service = webService;
     }
 
-    @GetMapping(path = "{username}")
-    public List<Repository> GetUserData(@PathVariable("username") String username) {
-
-        if(webLogicService.userExist(username)){
-            List<Repository> repositoriesList = webLogicService.getUserRepositories(username);
-            return repositoriesList;
-        }
-        else {
-            return null;
-        }
+    @GetMapping(path = "repositories/{username}")
+    public ResponseEntity GetUserRepositories(@PathVariable("username") String username) {
+        return service.GetUserRepositories(username);
     }
 
-    @DeleteMapping
-    public void Delete(){ }
+    @GetMapping(path = "notifications/{username}")
+    public ResponseEntity GetNotifications(@PathVariable("username") String username)  {
+        return service.GetNotifications(username);
+    }
+    @GetMapping(path = "users/{username}")
+    public ResponseEntity GetOtherUsers(@PathVariable("username") String username) {
+        return service.GetOtherUsers(username);
+    }
 
-    @PutMapping
-    public void Update(){}
 
 }
 

@@ -1,9 +1,7 @@
 package mygit.api;
 
-import mygit.service.WebLogic.WebLogic;
 import mygit.service.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +27,7 @@ public class LoginController {
         return service.Logout(username);
     }
 
-    @GetMapping(path = "signup/{username}")
+    @PostMapping(path = "signup/{username}")
     public ResponseEntity SignUp(@PathVariable("username") String username){
         return service.SignUp(username);
     }

@@ -1022,7 +1022,6 @@ public class Logic {
         String RootFolderSha1 = commit.getM_MainSHA1();
         String path = getPathFolder(".magit")+File.separator+"commitToShow"+File.separator+ getRootFolderName();
         try {
-
             Files.createDirectory(Paths.get(getPathFolder(".magit")+File.separator+"commitToShow"));
             Files.createDirectory(Paths.get(path));
             Files.createFile(Paths.get(CommitStatus.getPath()));
@@ -1091,11 +1090,7 @@ public class Logic {
                 }
                 String toFile = pathToWrite + Separator + Sha1 + System.lineSeparator();
                 Path pathToFile = Paths.get(CommitStatusFile);
-                try {
                     Files.write(pathToFile, toFile.getBytes(), StandardOpenOption.APPEND);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             } catch (IOException e) {
                 e.printStackTrace();
