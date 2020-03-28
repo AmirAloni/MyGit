@@ -4,6 +4,7 @@ import mygit.service.Logic.Logic;
 import mygit.service.Logic.Node.CommitNode;
 import mygit.service.Logic.Objects.BranchData;
 import mygit.service.WebLogic.WebLogic;
+import mygit.service.WebLogic.WebObjects.FileObject;
 import mygit.service.WebLogic.WebObjects.Notification;
 import mygit.service.WebLogic.WebObjects.Repository;
 import org.json.JSONArray;
@@ -142,7 +143,7 @@ public class WebService {
             if(webLogic.userExist(username)) {
                 Logic logicManager = new Logic(username, "C:\\magit-ex3\\" + username + "\\repositories\\" + repositoryName);
                 logicManager.spreadCommitToShow(commitSha1);
-                String jsonFilesString = createJsonFiles(username, repositoryName, logicManager.getRootFolderName()).toString();
+                String jsonFilesString = createCommitJsonFiles(username, repositoryName, logicManager.getRootFolderName()).toString();
 
 
                 return new ResponseEntity<String>(jsonFilesString, HttpStatus.OK);
@@ -176,9 +177,14 @@ public class WebService {
 
         return null;
     }
-    private JSONObject createJsonFiles(String username, String repoName, String rootFolderName) throws JSONException {
+    private JSONObject createCommitJsonFiles(String username, String repoName, String rootFolderName) throws JSONException {
 
         File rootFolder = new File("C:\\magit-ex3\\" + username + "\\repositories\\" + repoName + "\\.magit\\commitToShow\\" + rootFolderName);
+        return getJsonDataRec(rootFolder);
+    }
+    private JSONObject createWcJsonFiles(String username, String repoName) throws JSONException {
+
+        File rootFolder = new File("C:\\magit-ex3\\" + username + "\\repositories\\" + repoName + "\\" + repoName);
         return getJsonDataRec(rootFolder);
     }
 
@@ -194,6 +200,15 @@ public class WebService {
         }
     }
 
+    public ResponseEntity updateFileContent(String path, String content) {
+        try{
+            Files.write(Paths.get(path), content.getBytes());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }    }
+
     public ResponseEntity CreateRepository(String username, String repoName) {
         try{
             if(webLogic.userExist(username)) {
@@ -208,4 +223,21 @@ public class WebService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity GetWorkingCopyData(String username, String repositoryName) {
+        try{
+            if(webLogic.userExist(username)) {
+                 String jsonFilesString = createWcJsonFiles(username, repositoryName).toString();
+
+                return new ResponseEntity<>(jsonFilesString, HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>("User is not exists", HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

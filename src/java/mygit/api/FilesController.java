@@ -19,5 +19,12 @@ public class FilesController {
     public ResponseEntity GetFileContent(@RequestBody String path) {
         return service.GetFileContent(path);
     }
+
+    @PostMapping(path = "update")
+    public ResponseEntity updateFileContent(@RequestBody String pathContent) {
+        String path = pathContent.split("~")[0];
+        String content = pathContent.split("~")[1];
+        return service.updateFileContent(path, content);
+    }
 }
 

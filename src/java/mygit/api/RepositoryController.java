@@ -22,6 +22,10 @@ public class RepositoryController {
         return service.GetRepositoryData(username, repositoryName);
     }
 
+    @GetMapping(path = "wc/{username}/{repository}")
+    public ResponseEntity GetWorkingCopyData(@PathVariable("username") String username, @PathVariable("repository") String repositoryName) {
+        return service.GetWorkingCopyData(username, repositoryName);
+    }
     @PostMapping(path = "{username}/{reponame}")
     public ResponseEntity CreateRepository(@PathVariable("username") String username, @PathVariable("reponame") String repoName) {
         return service.CreateRepository(username, repoName);
@@ -31,12 +35,6 @@ public class RepositoryController {
     public ResponseEntity GetCommitData(@PathVariable("username") String username, @PathVariable("repo") String repoName, @PathVariable("commit") String commitSha1) {
         return service.GetCommitData(username, repoName, commitSha1);
     }
-
-    // @DeleteMapping(path = "{username}/{repo}")
-    // public void DeleteCommitToShow(@PathVariable("username") String username, @PathVariable("repo") String repoName) {
-    //     Logic logicManager = new Logic(username, "C:\\magit-ex3\\" + username + "\\repositories\\" + repoName + "\\.magit\\commitToShow");
-    //     logicManager.deleteFolder(new File(logicManager.getM_ActiveRepository()));
-    // }
 }
 
 

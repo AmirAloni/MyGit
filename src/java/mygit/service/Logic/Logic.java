@@ -197,7 +197,11 @@ public class Logic {
                 if (!(f.isDirectory() && f.listFiles().length == 0)) {//todo file nullpointer
                     folder.AddNewItem(recursiveTravelFolders(i_FolderToZipInto, f, i_WCstatus));
                 } else {
-                    deleteFolder(f);
+                    try {
+                        deleteDirectoryStream(f.toPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -339,7 +343,11 @@ public class Logic {
     //-------Check Out Head Branch---------Start--------
     public Boolean CheckOutHeadBranch(String i_BranchName) {
         File rootFolder = new File(m_ActiveRepository + File.separator + getRootFolderName());
-        deleteFolder(rootFolder);
+        try {
+            deleteDirectoryStream(rootFolder.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         spreadCommitToWc(i_BranchName);
         Path HeadFile = Paths.get(getPathFolder("branches") + File.separator + "HEAD.txt");
         try {
@@ -668,7 +676,11 @@ public class Logic {
                 if (!(f.isDirectory() && f.listFiles().length == 0)) {//todo file nullpointer
                     recursiveCloneTravelFolders(f);
                 } else {
-                    deleteFolder(f);
+                    try {
+                        deleteDirectoryStream(f.toPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } else { //isFile
@@ -963,14 +975,11 @@ public class Logic {
             file.delete();//todo delete return value
     }
 
-    public void deleteFolder(File file) {
-        if (file.isDirectory()) {
-            for (File f : file.listFiles())//todo file nullpointer
-                deleteFolder(f);
-            if (!file.getName().equals(getRootFolderName()))
-                file.delete();//todo delete return value
-        } else
-            file.delete();//todo delete return value
+    private void deleteDirectoryStream(Path path) throws IOException {
+        Files.walk(path)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
     }
 
     public String getContentOfFile(File i_File) {
@@ -1022,6 +1031,9 @@ public class Logic {
         String RootFolderSha1 = commit.getM_MainSHA1();
         String path = getPathFolder(".magit")+File.separator+"commitToShow"+File.separator+ getRootFolderName();
         try {
+            if(Files.exists(Paths.get(getPathFolder(".magit")+File.separator+"commitToShow"))){
+                deleteDirectoryStream(Paths.get(getPathFolder(".magit")+File.separator+"commitToShow"));
+            }
             Files.createDirectory(Paths.get(getPathFolder(".magit")+File.separator+"commitToShow"));
             Files.createDirectory(Paths.get(path));
             Files.createFile(Paths.get(CommitStatus.getPath()));
@@ -1227,7 +1239,11 @@ public class Logic {
         String ActiveBranch = getBranchActiveName();
         updateBranchActiveCommit(i_Sha1);
         File rootFolder = new File(m_ActiveRepository + File.separator + getRootFolderName());
-        deleteFolder(rootFolder);
+        try {
+            deleteDirectoryStream(rootFolder.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         spreadCommitToWc(ActiveBranch);
     }
 
