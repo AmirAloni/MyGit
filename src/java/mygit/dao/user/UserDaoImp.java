@@ -29,24 +29,24 @@ public class UserDaoImp implements UserDao{
     }
     @Override
     public void insertUser(User user) {
-        final String sql = "insert into users(userId, userName , userAddress,userEmail) values(:userId,:userName,:userEmail,:userAddress)";
+        final String sql = "insert into users(userId, userName , userPassword,userEmail) values(:userId,:userName,:userEmail,:userPassword)";
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("userId", user.getUserId())
                 .addValue("userName", user.getUserName())
                 .addValue("userEmail", user.getUserEmail())
-                .addValue("userAddress", user.getUserAddress());
+                .addValue("userPassword", user.getUserPassword());
         template.update(sql,param, holder);
     }
     @Override
     public void updateUser(User user) {
-        final String sql = "update users set userName=:userName, userAddress=:userAddress, userEmail=:userEmail where userId=:userId";
+        final String sql = "update users set userName=:userName, userPassword=:userPassword, userEmail=:userEmail where userId=:userId";
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("userId", user.getUserId())
                 .addValue("userName", user.getUserName())
                 .addValue("userEmail", user.getUserEmail())
-                .addValue("userAddress", user.getUserAddress());
+                .addValue("userPassword", user.getUserPassword());
         template.update(sql,param, holder);
     }
     @Override
