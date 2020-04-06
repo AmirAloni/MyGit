@@ -2,7 +2,7 @@ package mygit.service;
 
 import java.util.List;
 import javax.annotation.Resource;
-import mygit.dao.UserDao;
+import mygit.dao.user.UserDao;
 import mygit.entity.User;
 import org.springframework.stereotype.Component;
 
